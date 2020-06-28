@@ -1,0 +1,20 @@
+.wrapper{
+  height: 60px;
+  background-color: rgb(58,175,218);
+  position: relative;
+  color: white;
+}
+
+.title{
+  font-size: 1.5em;
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+app-add-todo{
+  font-size: 1.5em;
+  position: absolute;
+  right: 30px; top: 50%;
+  transform: translateY(-50%);
+}

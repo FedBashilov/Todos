@@ -1,0 +1,18 @@
+<div class="project-list">
+  <mat-card class="project-card" *ngFor="let project of allProjects; index as i;">
+    <mat-card-header>
+      <mat-card-title>{{project.title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="todo-list">
+        <div class="todo"  *ngFor="let todo of project.todos; index as j;">
+          <mat-checkbox [checked]="todo.isCompleted" color='primary' (click)="changeTodoCheckedFlag(todo)">
+            <span class="todo-lable"
+            [ngStyle]="{'text-decoration': todo.isCompleted? 'line-through' : 'none'}">
+            {{todo.text}}</span>
+          </mat-checkbox>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

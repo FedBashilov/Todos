@@ -1,0 +1,44 @@
+.project-list{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+ grid-column-gap: 6px;
+ grid-row-gap:6px;
+}
+
+.project-card{
+  margin: 15px;
+}
+
+::ng-deep .mat-card{
+   padding: 10px 0 !important;
+ }
+
+::ng-deep mat-card-header{
+  border-bottom: 1px solid rgb(242, 242, 242);
+}
+
+.todo-list{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.todo{
+  margin: 10px;
+}
+.todo-lable{
+  white-space: normal;
+}
+
+mat-checkbox[type=checkbox]:checked + .todo-lable{
+  text-decoration: line-through;
+}
+::ng-deep .mat-checkbox-checked .mat-checkbox-background,
+::ng-deep .mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: rgb(58,175,218) !important;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background .todo-lable,
+::ng-deep .mat-checkbox-indeterminate .mat-checkbox-background .todo-lable{
+  text-decoration: line-through;
+}

@@ -1,0 +1,42 @@
+.title{
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.add-todo-form{
+  padding: 10px 15px;
+}
+
+input.ng-touched.ng-invalid{
+ border-color: red;
+}
+
+.form-field{
+  display: block;
+  margin: 10px 0;
+}
+
+.action-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.action-button{
+  width: 100px;
+  height: 30px;
+  margin: 2px;
+  color: white;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+}
+
+.grey{
+  background-color: rgb(159, 159, 159);
+}
+
+.blue{
+  background-color: rgb(58, 175, 218);
+}

@@ -1,0 +1,27 @@
+<form class="add-todo-form" [formGroup]="addTodoForm" (submit)="onSubmit()">
+  <div class="title">Новая задача</div>
+
+  <mat-form-field class="form-field">
+    <input matInput formControlName="text" placeholder="Название задачи...">
+  </mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Выберите категорию</mat-label>
+    <mat-select formControlName="proj_id" (selectionChange)="onChanges()">
+      <mat-option [value]="-1">
+        Новая категория
+      </mat-option>
+      <mat-option *ngFor="let project of allProjects"  [value]="project.id">
+        {{project.title}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="form-field" *ngIf="addTodoForm.value.proj_id == -1">
+    <input matInput formControlName="new_proj_title" placeholder="Новая категория...">
+  </mat-form-field>
+
+  <div class="action-buttons">
+    <button class="action-button grey" mat-dialog-close>Отмена</button>
+    <button class="action-button blue" type="submit">Отправить</button>
+  </div>
+
+</form>
