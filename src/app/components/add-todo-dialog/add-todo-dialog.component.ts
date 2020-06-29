@@ -1,33 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
+import {plainToClass} from "class-transformer";
+import { Subscription } from "rxjs";
 
 import { ApiService } from '../../services/api.service';
+import { ProjectsService } from '../../services/projects.service';
+
 import { Project } from '../../models/project.model';
 import { Todo } from '../../models/todo.model';
-import {plainToClass} from "class-transformer";
+
 @Component({
   selector: 'app-add-todo-dialog',
   templateUrl: './add-todo-dialog.component.html',
   styleUrls: ['./add-todo-dialog.component.css']
 })
-export class AddTodoDialogComponent implements OnInit {
+export class AddTodoDialogComponent implements OnInit, OnDestroy {
   public addTodoForm: FormGroup;
-  public allProjects: any;
+
+  private subscriptionAllProjects: Subscription;
+  public allProjects: Project[] = [];
 
   constructor(private fb: FormBuilder,
     private apiService: ApiService,
-    private dialogRef: MatDialogRef<AddTodoDialogComponent>) { }
+    private dialogRef: MatDialogRef<AddTodoDialogComponent>,
+    private projectsService: ProjectsService) {
+      this.subscriptionAllProjects = this.projectsService.allProjectsObs.subscribe(projects => {
+        this.allProjects = projects;
+      });
+    }
 
   ngOnInit(): void {
     this.initForm();
-    this.apiService.getAllProjects().subscribe( (response: any) => {
-      this.allProjects = plainToClass(Project, response.data);
-      this.allProjects.forEach(project => {
-        project.todos = plainToClass(Todo, project.todos);
-      });
-    });
+  }
 
+  ngOnDestroy(){
+    //Отписка от отслеживания
+    this.subscriptionAllProjects.unsubscribe();
   }
 
   initForm(){
@@ -70,7 +79,15 @@ export class AddTodoDialogComponent implements OnInit {
      this.addTodoForm.value.text,
      this.addTodoForm.value.proj_id,
      this.addTodoForm.value.new_proj_title).subscribe( (response: any) => {
-      this.dialogRef.close();
+       this.apiService.getAllProjects().subscribe( (response: any) => {
+         let projects: any;
+         projects = plainToClass(Project, response.data);
+         projects.forEach(project => {
+           project.todos = plainToClass(Todo, project.todos);
+         });
+         this.projectsService.setAllProjects(projects);
+       });
+       this.dialogRef.close();
    });
   }
 }

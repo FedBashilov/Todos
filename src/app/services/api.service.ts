@@ -10,7 +10,7 @@ import { Todo } from  './../models/todo.model';
 })
 export class ApiService {
 
-  public API_SERVER = "http://localhost:3000"; //Адрес сервера
+  public API_SERVER = "https://rocky-caverns-04393.herokuapp.com"; //Адрес сервера
 
   constructor(private httpClient: HttpClient) {}
 

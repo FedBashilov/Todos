@@ -1,26 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import {plainToClass} from "class-transformer";
+import { Subscription } from "rxjs";
+
 import { ApiService } from '../../services/api.service';
+import { ProjectsService } from '../../services/projects.service';
 
 import { Project } from '../../models/project.model';
 import { Todo } from '../../models/todo.model';
-import {plainToClass} from "class-transformer";
+
+
+
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.css']
 })
-export class ProjectListComponent implements OnInit {
-  public allProjects: any;
+export class ProjectListComponent implements OnInit, OnDestroy {
 
-  constructor(private apiService: ApiService) { }
+  private subscriptionAllProjects: Subscription;
+  public allProjects: Project[] = [];
+
+  constructor(private apiService: ApiService, private projectsService: ProjectsService) {
+    this.subscriptionAllProjects = this.projectsService.allProjectsObs.subscribe(projects => {
+      this.allProjects = projects;
+    });
+  }
 
   ngOnInit(): void {
     this.apiService.getAllProjects().subscribe( (response: any) => {
-      this.allProjects = plainToClass(Project, response.data);
-      this.allProjects.forEach(project => {
+      let projects: any;
+      projects = plainToClass(Project, response.data);
+      projects.forEach(project => {
         project.todos = plainToClass(Todo, project.todos);
       });
+      this.projectsService.setAllProjects(projects);
     });
+  }
+
+  ngOnDestroy(){
+    //Отписка от отслеживания
+    this.subscriptionAllProjects.unsubscribe();
   }
 
   changeTodoCheckedFlag(todo: Todo){
