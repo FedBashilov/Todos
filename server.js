@@ -1,9 +1,16 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
+
 
 const app = express();
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+/*
+
+const cors = require('cors');
 const whitelist = ['https://rocky-caverns-04393.herokuapp.com', 'https://todos-and-projects-angular.herokuapp.com']; // allow domain
 
 const corsOptions = {
@@ -22,7 +29,7 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
-
+*/
 app.use(express.static(path.join(__dirname, '/dist/Todos')));
 app.listen(process.env.PORT || 8080);
 
